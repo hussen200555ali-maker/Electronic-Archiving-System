@@ -1,2 +1,2 @@
-# Electronic-Archiving-System
+# electronic-archiving-system
  نظام أرشفة إلكتروني (تطبيق سطح مكتب) مبني بلغة C# و SQL Server. يتميز بتخزين الملفات مشفرة (AES) وإدارة صلاحيات متعددة المستويات.
