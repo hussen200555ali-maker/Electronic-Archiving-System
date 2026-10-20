@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7fcf2d382be244238b1045fee3a86069" Name="Diagram1">
+        <EntityTypeShape EntityType="DBEArchieModel.TB_Dep" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBEArchieModel.TBUser" Width="1.5" PointX="3" PointY="5.25" />
+        <AssociationConnector Association="DBEArchieModel.FK_TBUsers_TB_Dep" />
+        <EntityTypeShape EntityType="DBEArchieModel.TBArchiveCat" Width="1.5" PointX="5.25" PointY="5.5" />
+        <AssociationConnector Association="DBEArchieModel.FK_TBArchiveCat_TBUsers" />
+        <EntityTypeShape EntityType="DBEArchieModel.ArchiveFile" Width="1.5" PointX="9.75" PointY="5.625" />
+        <EntityTypeShape EntityType="DBEArchieModel.TBArchive1" Width="1.5" PointX="7.5" PointY="5.25" />
+        <AssociationConnector Association="DBEArchieModel.FK__ArchiveFi__IDArc__5165187F" />
+        <AssociationConnector Association="DBEArchieModel.FK__TBArchive__IDCat__4D94879B" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

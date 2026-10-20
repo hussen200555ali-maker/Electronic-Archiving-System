@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBEArchieModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ArchiveFile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDArchive" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FileData" Type="varbinary(max)" />
+          <Property Name="FileExtension" Type="nvarchar" MaxLength="10" />
+          <Property Name="FileSize" Type="bigint" />
+          <Property Name="AddDate" Type="datetime" StoreGeneratedPattern="Computed" />
+          <Property Name="UploadedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TB_Dep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepName" Type="nvarchar(max)" />
+          <Property Name="DepDetails" Type="nvarchar(max)" />
+          <Property Name="AddDate" Type="datetime" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="TBArchive1">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDCategory" Type="int" />
+          <Property Name="ArchDep" Type="nvarchar" MaxLength="100" />
+          <Property Name="ArchiveTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="ArchNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArchDate" Type="date" />
+          <Property Name="ArchSender" Type="nvarchar" MaxLength="100" />
+          <Property Name="ArchReciver" Type="nvarchar" MaxLength="100" />
+          <Property Name="ArchDetails" Type="nvarchar(max)" />
+          <Property Name="AddDate" Type="datetime" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="TBArchiveCat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDUser" Type="int" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserDep" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArchiveTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArchiveDes" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddDate" Type="datetime" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="TBUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDDep" Type="int" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserRole" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddDate" Type="datetime" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK__ArchiveFi__IDArc__5165187F">
+          <End Role="TBArchive1" Type="Self.TBArchive1" Multiplicity="1" />
+          <End Role="ArchiveFile" Type="Self.ArchiveFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBArchive1">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ArchiveFile">
+              <PropertyRef Name="IDArchive" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBArchive__IDCat__4D94879B">
+          <End Role="TBArchiveCat" Type="Self.TBArchiveCat" Multiplicity="0..1" />
+          <End Role="TBArchive1" Type="Self.TBArchive1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBArchiveCat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBArchive1">
+              <PropertyRef Name="IDCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBArchiveCat_TBUsers">
+          <End Role="TBUsers" Type="Self.TBUsers" Multiplicity="0..1" />
+          <End Role="TBArchiveCat" Type="Self.TBArchiveCat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBArchiveCat">
+              <PropertyRef Name="IDUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBUsers_TB_Dep">
+          <End Role="TB_Dep" Type="Self.TB_Dep" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TBUsers" Type="Self.TBUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Dep">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBUsers">
+              <PropertyRef Name="IDDep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBEArchieModelStoreContainer">
+          <EntitySet Name="ArchiveFile" EntityType="Self.ArchiveFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Dep" EntityType="Self.TB_Dep" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBArchive1" EntityType="Self.TBArchive1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBArchiveCat" EntityType="Self.TBArchiveCat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBUsers" EntityType="Self.TBUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ArchiveFi__IDArc__5165187F" Association="Self.FK__ArchiveFi__IDArc__5165187F">
+            <End Role="TBArchive1" EntitySet="TBArchive1" />
+            <End Role="ArchiveFile" EntitySet="ArchiveFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBArchive__IDCat__4D94879B" Association="Self.FK__TBArchive__IDCat__4D94879B">
+            <End Role="TBArchiveCat" EntitySet="TBArchiveCat" />
+            <End Role="TBArchive1" EntitySet="TBArchive1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBArchiveCat_TBUsers" Association="Self.FK_TBArchiveCat_TBUsers">
+            <End Role="TBUsers" EntitySet="TBUsers" />
+            <End Role="TBArchiveCat" EntitySet="TBArchiveCat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBUsers_TB_Dep" Association="Self.FK_TBUsers_TB_Dep">
+            <End Role="TB_Dep" EntitySet="TB_Dep" />
+            <End Role="TBUsers" EntitySet="TBUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBEArchieModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_Dep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DepDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="TBUsers" Relationship="DBEArchieModel.FK_TBUsers_TB_Dep" FromRole="TB_Dep" ToRole="TBUser" />
+        </EntityType>
+        <EntityContainer Name="DBEArchieEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_Dep" EntityType="Self.TB_Dep" />
+          <EntitySet Name="TBUsers" EntityType="DBEArchieModel.TBUser" />
+          <AssociationSet Name="FK_TBUsers_TB_Dep" Association="DBEArchieModel.FK_TBUsers_TB_Dep">
+            <End Role="TB_Dep" EntitySet="TB_Dep" />
+            <End Role="TBUser" EntitySet="TBUsers" />
+          </AssociationSet>
+          <EntitySet Name="TBArchiveCats" EntityType="DBEArchieModel.TBArchiveCat" />
+          <AssociationSet Name="FK_TBArchiveCat_TBUsers" Association="DBEArchieModel.FK_TBArchiveCat_TBUsers">
+            <End Role="TBUser" EntitySet="TBUsers" />
+            <End Role="TBArchiveCat" EntitySet="TBArchiveCats" />
+          </AssociationSet>
+          <EntitySet Name="ArchiveFiles" EntityType="DBEArchieModel.ArchiveFile" />
+          <EntitySet Name="TBArchive1" EntityType="DBEArchieModel.TBArchive1" />
+          <AssociationSet Name="FK__ArchiveFi__IDArc__5165187F" Association="DBEArchieModel.FK__ArchiveFi__IDArc__5165187F">
+            <End Role="TBArchive1" EntitySet="TBArchive1" />
+            <End Role="ArchiveFile" EntitySet="ArchiveFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBArchive__IDCat__4D94879B" Association="DBEArchieModel.FK__TBArchive__IDCat__4D94879B">
+            <End Role="TBArchiveCat" EntitySet="TBArchiveCats" />
+            <End Role="TBArchive1" EntitySet="TBArchive1" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TBUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDep" Type="Int32" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserRole" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="TB_Dep" Relationship="DBEArchieModel.FK_TBUsers_TB_Dep" FromRole="TBUser" ToRole="TB_Dep" />
+          <NavigationProperty Name="TBArchiveCats" Relationship="DBEArchieModel.FK_TBArchiveCat_TBUsers" FromRole="TBUser" ToRole="TBArchiveCat" />
+        </EntityType>
+        <Association Name="FK_TBUsers_TB_Dep">
+          <End Type="DBEArchieModel.TB_Dep" Role="TB_Dep" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBEArchieModel.TBUser" Role="TBUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Dep">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBUser">
+              <PropertyRef Name="IDDep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TBArchiveCat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUser" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserDep" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchiveTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchiveDes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="TBUser" Relationship="DBEArchieModel.FK_TBArchiveCat_TBUsers" FromRole="TBArchiveCat" ToRole="TBUser" />
+          <NavigationProperty Name="TBArchive1" Relationship="DBEArchieModel.FK__TBArchive__IDCat__4D94879B" FromRole="TBArchiveCat" ToRole="TBArchive1" />
+        </EntityType>
+        <Association Name="FK_TBArchiveCat_TBUsers">
+          <End Type="DBEArchieModel.TBUser" Role="TBUser" Multiplicity="0..1" />
+          <End Type="DBEArchieModel.TBArchiveCat" Role="TBArchiveCat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBUser">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBArchiveCat">
+              <PropertyRef Name="IDUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ArchiveFile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDArchive" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileSize" Type="Int64" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="TBArchive1" Relationship="DBEArchieModel.FK__ArchiveFi__IDArc__5165187F" FromRole="ArchiveFile" ToRole="TBArchive1" />
+          <Property Name="FileExtension" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UploadedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TBArchive1">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDCategory" Type="Int32" />
+          <Property Name="ArchDep" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ArchiveTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ArchNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchDate" Type="DateTime" Precision="0" />
+          <Property Name="ArchSender" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ArchReciver" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ArchDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ArchiveFiles" Relationship="DBEArchieModel.FK__ArchiveFi__IDArc__5165187F" FromRole="TBArchive1" ToRole="ArchiveFile" />
+          <NavigationProperty Name="TBArchiveCat" Relationship="DBEArchieModel.FK__TBArchive__IDCat__4D94879B" FromRole="TBArchive1" ToRole="TBArchiveCat" />
+        </EntityType>
+        <Association Name="FK__ArchiveFi__IDArc__5165187F">
+          <End Type="DBEArchieModel.TBArchive1" Role="TBArchive1" Multiplicity="1" />
+          <End Type="DBEArchieModel.ArchiveFile" Role="ArchiveFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBArchive1">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ArchiveFile">
+              <PropertyRef Name="IDArchive" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBArchive__IDCat__4D94879B">
+          <End Type="DBEArchieModel.TBArchiveCat" Role="TBArchiveCat" Multiplicity="0..1" />
+          <End Type="DBEArchieModel.TBArchive1" Role="TBArchive1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBArchiveCat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBArchive1">
+              <PropertyRef Name="IDCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBEArchieModelStoreContainer" CdmEntityContainer="DBEArchieEntity">
+          <EntitySetMapping Name="TB_Dep">
+            <EntityTypeMapping TypeName="DBEArchieModel.TB_Dep">
+              <MappingFragment StoreEntitySet="TB_Dep">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DepName" ColumnName="DepName" />
+                <ScalarProperty Name="DepDetails" ColumnName="DepDetails" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBUsers">
+            <EntityTypeMapping TypeName="DBEArchieModel.TBUser">
+              <MappingFragment StoreEntitySet="TBUsers">
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="IDDep" ColumnName="IDDep" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBArchiveCats">
+            <EntityTypeMapping TypeName="DBEArchieModel.TBArchiveCat">
+              <MappingFragment StoreEntitySet="TBArchiveCat">
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ArchiveDes" ColumnName="ArchiveDes" />
+                <ScalarProperty Name="ArchiveTitle" ColumnName="ArchiveTitle" />
+                <ScalarProperty Name="UserDep" ColumnName="UserDep" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IDUser" ColumnName="IDUser" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchiveFiles">
+            <EntityTypeMapping TypeName="DBEArchieModel.ArchiveFile">
+              <MappingFragment StoreEntitySet="ArchiveFile">
+                <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="IDArchive" ColumnName="IDArchive" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBArchive1">
+            <EntityTypeMapping TypeName="DBEArchieModel.TBArchive1">
+              <MappingFragment StoreEntitySet="TBArchive1">
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ArchDetails" ColumnName="ArchDetails" />
+                <ScalarProperty Name="ArchReciver" ColumnName="ArchReciver" />
+                <ScalarProperty Name="ArchSender" ColumnName="ArchSender" />
+                <ScalarProperty Name="ArchDate" ColumnName="ArchDate" />
+                <ScalarProperty Name="ArchNumber" ColumnName="ArchNumber" />
+                <ScalarProperty Name="ArchiveTitle" ColumnName="ArchiveTitle" />
+                <ScalarProperty Name="ArchDep" ColumnName="ArchDep" />
+                <ScalarProperty Name="IDCategory" ColumnName="IDCategory" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
